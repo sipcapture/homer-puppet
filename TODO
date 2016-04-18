@@ -1,4 +1,4 @@
-- Import existing module
+DONE - Import existing module
 - Re-adapt to CentOS
 - Optionally use apache
 - Otionally use Docker (Compose)
