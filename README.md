@@ -1,7 +1,9 @@
-# homer-puppet
-HOMER Puppet Modules
+[![Logo](http://sipcapture.org/data/images/sipcapture_header.png)](http://sipcapture.org)
 
-This is a Puppet module to install and configure Homer (https://github.com/sipcapture/homer)
+# homer-puppet
+#### HOMER Puppet Modules
+
+This is a Puppet module to install and configure [Homer](https://github.com/sipcapture/homer)
 
 Define a structure like this:
 
