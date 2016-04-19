@@ -3,3 +3,6 @@ DONE - Import existing module
 - Optionally use apache
 - Otionally use Docker (Compose)
 - Review the several TODO notes spread around the code
+- Only conditionally install kamailio packages
+- Only conditionally run kamailio?
+- Configuration item for kamailio version

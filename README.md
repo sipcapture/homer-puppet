@@ -8,13 +8,17 @@ Define a structure like this:
 ```
 /root/homer-ui  (source code for homer-ui)
 /root/homer-api (source code for homer-api)
-/root/puppet/site.pp
 ```
+
+In this case the variable `source_dir` is '/root'. This tells the Puppet module where to get the code for UI and API.
+
+Then checkout `homer-puppet` (this repo), e.g. in '/root'.
+
 
 Then:
 
 ```
-cd /root/puppet
+cd /root/homer-puppet
 ```
 
 Depending on your strategy (hieradata, role/profile, etc) things may change, but you can just define the puppet/site.pp like:
@@ -30,7 +34,7 @@ node default {
 }
 ```
 
-and apply:
+and apply (`noop` first to verify the changes):
 
 ```
 sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff --noop
@@ -44,12 +48,13 @@ Dependencies
 - 'puppetlabs-mysql'
 - 'puppetlabs-apt'
 
-(see Modulefile)
+(see metadata.json)
 
 Tested on
 ---------
 
 Ubuntu 14.04
+
 Debian 8.3
 
 License
