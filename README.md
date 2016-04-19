@@ -23,7 +23,7 @@ Then:
 cd /root/homer-puppet
 ```
 
-Depending on your strategy (hieradata, role/profile, etc) things may change, but you can just define the puppet/site.pp like:
+Depending on your strategy _(hieradata, role/profile, etc)_ things may change, but you can just define the ```puppet/site.pp``` like:
 
 ```
 node default {
@@ -50,7 +50,7 @@ Dependencies
 - 'puppetlabs-mysql'
 - 'puppetlabs-apt'
 
-(see metadata.json)
+(see [metadata.json](https://github.com/sipcapture/homer-puppet/blob/master/modules/homer/metadata.json))
 
 Tested on
 ---------
