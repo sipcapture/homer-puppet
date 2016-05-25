@@ -114,11 +114,13 @@
 #
 class homer(
     $base_dir            = $homer::params::base_dir,
+    $compose_bin         = $homer::params::compose_bin,
     $compose_dir         = $homer::params::compose_dir,
     $listen_if           = $homer::params::listen_if,
     $listen_port         = $homer::params::listen_port,
     $listen_proto        = $homer::params::listen_proto,
     $kamailio_etc_dir    = $homer::params::kamailio_etc_dir,
+    $kamailio_image      = $homer::params::kamailio_image,
     $kamailio_mpath      = $homer::params::kamailio_mpath,
     $manage_mysql        = $homer::params::manage_mysql,
     $mysql_host          = $homer::params::mysql_host,
@@ -131,6 +133,7 @@ class homer(
     $web_dir             = $homer::params::web_dir,
     $web_user            = $homer::params::web_user,
     $ui_admin_password   = $homer::params::ui_admin_password,
+    $ui_api_image        = $homer::params::ui_api_image,
     $use_docker          = $homer::params::use_docker,
 ) inherits homer::params {
     validate_bool($manage_mysql)
@@ -156,10 +159,13 @@ class homer(
 
     if ($use_docker) {
         class { 'homer::docker_manager':
+            compose_bin    => $compose_bin,
             compose_dir    => $compose_dir,
+            kamailio_image => $kamailio_image,
             mysql_host     => $mysql_host,
             mysql_user     => $mysql_user,
             mysql_password => $mysql_password,
+            ui_api_image   => $ui_api_image,
         }
     }
     else {

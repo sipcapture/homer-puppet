@@ -43,12 +43,38 @@ sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --sh
 sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff
 ```
 
+Using Docker
+------------
+
+If you set `use_docker` to `true`, then Puppet will manage two container, one from `kamailio_image` and one from `ui_api_image`.
+The images can be built in advance, then their names passed to the Homer module, e.g.:
+
+```
+node default {
+    class { 'homer':
+        base_dir            => '/homer',
+        compose_bin         => '/usr/local/bin/docker-compose',
+        compose_dir         => '/homer-docker',
+        kamailio_image      => 'gvacca/kamailio_image',
+        manage_mysql        => true,
+        mysql_password      => 'astrongone',
+        mysql_root_password => 'averystrongone',
+        ui_admin_password   => 'theadmin123',
+        ui_api_image        => 'gvacca/ui_api_image',
+        use_docker          => true,
+    }
+}
+```
+
+This module manages the containers with Docker Compose.
+
 Dependencies
 ------------
 
 - 'puppetlabs-stdlib'
 - 'puppetlabs-mysql'
 - 'puppetlabs-apt'
+- 'garethr-docker'
 
 (see [metadata.json](https://github.com/sipcapture/homer-puppet/blob/master/modules/homer/metadata.json))
 
