@@ -5,6 +5,9 @@
 
 This is a Puppet module to install and configure [Homer](https://github.com/sipcapture/homer)
 
+Installing directly on the target host
+--------------------------------------
+
 Define a structure like this:
 
 ```
@@ -36,17 +39,10 @@ node default {
 }
 ```
 
-and apply (`noop` first to verify the changes):
-
-```
-sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff --noop
-sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff
-```
-
 Using Docker
 ------------
 
-If you set `use_docker` to `true`, then Puppet will manage two container, one from `kamailio_image` and one from `ui_api_image`.
+If you set `use_docker` to `true`, then Puppet will manage two containers, one from `kamailio_image` and one from `ui_api_image`.
 The images can be built in advance, then their names passed to the Homer module, e.g.:
 
 ```
@@ -66,7 +62,19 @@ node default {
 }
 ```
 
-This module manages the containers with Docker Compose.
+This module manages the containers with Docker Compose. At each run Compose tries to pull the images to ensure they are at latest version.
+
+Applying Puppet
+---------------
+
+This module can be used with Puppet in Master/Slave, but also directly on the target host, in stand-alone mode, with:
+
+```
+sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff --noop
+sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff
+```
+
+(`noop` first to verify the changes).
 
 Dependencies
 ------------
@@ -74,7 +82,7 @@ Dependencies
 - 'puppetlabs-stdlib'
 - 'puppetlabs-mysql'
 - 'puppetlabs-apt'
-- 'garethr-docker'
+- 'garethr-docker' (only with `use_docker` true)
 
 (see [metadata.json](https://github.com/sipcapture/homer-puppet/blob/master/modules/homer/metadata.json))
 
