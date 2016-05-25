@@ -1,6 +1,6 @@
 {
   "name": "sipcapture-homer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "giavac",
   "summary": "Install and configure Homer",
   "license": "Apache License, Version 2.0",
@@ -25,6 +25,7 @@
   "dependencies": [
     {"name":"puppetlabs/stdlib"},
     {"name":"puppetlabs/mysql"},
-    {"name":"puppetlabs/apt"}
+    {"name":"puppetlabs/apt"},
+    {"name":"garethr/docker"}
   ]
 }

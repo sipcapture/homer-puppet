@@ -30,6 +30,10 @@
 #   Path to install Homer mysql scripts
 #   Defaults to '/opt/homer'
 #
+# [*compose_dir*]
+#   Path to install Docker Compose files
+#   Defaults to '/opt/homer-docker'
+#
 # [*listen_if*]
 #   Interface for kamailio to listen to
 #   Defaults to '0.0.0.0'
@@ -91,6 +95,10 @@
 # [*ui_admin_password*]
 #   Password for UI admin user
 #
+# [*use_docker*]
+#   Whether to install Docker containers or directly on host
+#   Defaults to false
+#
 # === Examples
 #
 #  class { homer:
@@ -106,6 +114,7 @@
 #
 class homer(
     $base_dir            = $homer::params::base_dir,
+    $compose_dir         = $homer::params::compose_dir,
     $listen_if           = $homer::params::listen_if,
     $listen_port         = $homer::params::listen_port,
     $listen_proto        = $homer::params::listen_proto,
@@ -122,8 +131,10 @@ class homer(
     $web_dir             = $homer::params::web_dir,
     $web_user            = $homer::params::web_user,
     $ui_admin_password   = $homer::params::ui_admin_password,
+    $use_docker          = $homer::params::use_docker,
 ) inherits homer::params {
     validate_bool($manage_mysql)
+    validate_bool($use_docker)
 
     if $ui_admin_password == undef {
         fail('You must define ui_admin_password')
@@ -143,35 +154,45 @@ class homer(
         }
     }
 
-    class { 'homer::mysql::scripts':
-        base_dir            => $base_dir,
-        mysql_host          => $mysql_host,
-        mysql_user          => $mysql_user,
-        mysql_password      => $mysql_password,
-        mysql_root_password => $mysql_root_password,
-        ui_admin_password   => $ui_admin_password,
-    } ->
-    class { 'homer::web':
-        base_dir       => $base_dir,
-        mysql_user     => $mysql_user,
-        mysql_password => $mysql_password,
-        phpfpm_socket  => $phpfpm_socket,
-        source_dir     => $source_dir,
-        web_dir        => $web_dir,
-        web_user       => $web_user,
-    } ->
-    class { 'homer::php':
-        php_session_path => $php_session_path,
-        phpfpm_socket    => $phpfpm_socket,
-        web_user         => $web_user,
-    } ->
-    class { 'homer::kamailio':
-        listen_proto     => $listen_proto,
-        listen_if        => $listen_if,
-        listen_port      => $listen_port,
-        kamailio_etc_dir => $kamailio_etc_dir,
-        kamailio_mpath   => $kamailio_mpath,
-        mysql_password   => $mysql_password,
-        mysql_user       => $mysql_user,
+    if ($use_docker) {
+        class { 'homer::docker_manager':
+            compose_dir    => $compose_dir,
+            mysql_host     => $mysql_host,
+            mysql_user     => $mysql_user,
+            mysql_password => $mysql_password,
+        }
+    }
+    else {
+        class { 'homer::mysql::scripts':
+            base_dir            => $base_dir,
+            mysql_host          => $mysql_host,
+            mysql_user          => $mysql_user,
+            mysql_password      => $mysql_password,
+            mysql_root_password => $mysql_root_password,
+            ui_admin_password   => $ui_admin_password,
+        } ->
+        class { 'homer::web':
+            base_dir       => $base_dir,
+            mysql_user     => $mysql_user,
+            mysql_password => $mysql_password,
+            phpfpm_socket  => $phpfpm_socket,
+            source_dir     => $source_dir,
+            web_dir        => $web_dir,
+            web_user       => $web_user,
+        } ->
+        class { 'homer::php':
+            php_session_path => $php_session_path,
+            phpfpm_socket    => $phpfpm_socket,
+            web_user         => $web_user,
+        } ->
+        class { 'homer::kamailio':
+            listen_proto     => $listen_proto,
+            listen_if        => $listen_if,
+            listen_port      => $listen_port,
+            kamailio_etc_dir => $kamailio_etc_dir,
+            kamailio_mpath   => $kamailio_mpath,
+            mysql_password   => $mysql_password,
+            mysql_user       => $mysql_user,
+        }
     }
 }

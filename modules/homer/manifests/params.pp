@@ -21,6 +21,7 @@
 # class homer::params
 class homer::params {
     $base_dir            = '/opt/homer'
+    $compose_dir         = '/opt/homer-docker'
     $listen_if           = '0.0.0.0'
     $listen_port         = '9060'
     $listen_proto        = 'udp'
@@ -37,4 +38,5 @@ class homer::params {
     $web_dir             = '/var/www/sipcapture'
     $web_user            = 'www-data'
     $ui_admin_password   = undef
+    $use_docker          = false
 }

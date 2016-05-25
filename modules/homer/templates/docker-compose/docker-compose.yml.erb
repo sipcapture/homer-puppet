@@ -1,0 +1,17 @@
+# -------------- Homer ----------------
+# ---------- Homer UI/API container ------------
+homer-ui-api:
+  container_name: homer-ui-api
+  image: <%= @ui_api_image %>
+  ports:
+    - "80:80"
+  env_file:
+    - ./homer.env
+# ---------- Homer kamailio container ------------
+homer-kamailio:
+  container_name: homer-kamailio
+  image: <%= @kamailio_image %>
+  ports:
+    - "9060:9060/udp"
+  env_file:
+    - ./homer.env
