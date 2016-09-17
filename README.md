@@ -12,6 +12,14 @@ Define a structure like this:
 /root/homer-api (source code for homer-api)
 ```
 
+e.g. with:
+
+```
+cd /root
+https://github.com/sipcapture/homer-ui
+https://github.com/sipcapture/homer-api
+```
+
 In this case the variable `source_dir` is '/root'. This tells the Puppet module where to get the code for UI and API.
 
 Then checkout `homer-puppet` (this repo), e.g. in '/root'.
@@ -23,7 +31,7 @@ Then:
 cd /root/homer-puppet
 ```
 
-Depending on your strategy _(hieradata, role/profile, etc)_ things may change, but you can just define the ```puppet/site.pp``` like:
+Depending on your strategy _(hieradata, role/profile, etc)_ things may change, but you can just define ```site.pp``` like:
 
 ```
 node default {
@@ -34,6 +42,14 @@ node default {
         ui_admin_password   => 'theadmin123',
     }
 }
+```
+
+Satisfy puppet dependencies if not already:
+
+```
+sudo puppet module install puppetlabs/stdlib
+sudo puppet module install puppetlabs/mysql
+sudo puppet module install puppetlabs/apt
 ```
 
 and apply (`noop` first to verify the changes):
