@@ -129,6 +129,10 @@ class homer(
         fail('You must define ui_admin_password')
     }
 
+    stage { 'preconditions':
+        before => Stage['main'],
+    }
+
     if ($manage_mysql) {
         if $mysql_password == undef {
             fail('You must define mysql_password')
@@ -140,6 +144,7 @@ class homer(
 
         class { 'homer::mysql':
             mysql_root_password => $mysql_root_password,
+            stage               => 'preconditions',
         }
     }
 
