@@ -1,4 +1,5 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO,ALLOW_INVALID_DATES";
 
 --
 -- Database: `homer_statistic`
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `alarm_data_mem` (
 CREATE TABLE IF NOT EXISTS `stats_data` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `from_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `to_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `to_date` timestamp NOT NULL DEFAULT '1971-01-01 00:00:01',
   `type` varchar(50) NOT NULL DEFAULT '',
   `total` int(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`,`from_date`),
@@ -96,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `stats_data` (
 CREATE TABLE IF NOT EXISTS `stats_ip` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `from_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `to_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `to_date` timestamp NOT NULL DEFAULT '1971-01-01 00:00:01',
   `method` varchar(50) NOT NULL DEFAULT '',
   `source_ip` varchar(255) NOT NULL DEFAULT '0.0.0.0',
   `total` int(20) NOT NULL DEFAULT 0,
@@ -154,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `stats_geo_mem` (
 CREATE TABLE IF NOT EXISTS `stats_geo` (
 `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `from_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `to_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `to_date` timestamp NOT NULL DEFAULT '1971-01-01 00:00:01',
   `method` varchar(50) NOT NULL DEFAULT '',
   `country` varchar(255) NOT NULL DEFAULT 'UN',
   `lat` float NOT NULL DEFAULT '0',
@@ -172,13 +173,61 @@ CREATE TABLE IF NOT EXISTS `stats_geo` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `stats_dest_mem`
+--
+
+CREATE TABLE IF NOT EXISTS `stats_dest_mem` (
+`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT ,
+  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `prefix` varchar(50) NOT NULL,
+  `method` varchar(50) NOT NULL DEFAULT '',
+  `reply_reason` varchar(100) NOT NULL DEFAULT '',
+  `country` varchar(255) NOT NULL DEFAULT 'UN',
+  `lat` float NOT NULL DEFAULT '0',
+  `lon` float NOT NULL DEFAULT '0',
+  `duration` int,
+  `total` int(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `datemethod` (`country` ,`prefix`,`method`)
+) ENGINE=MEMORY DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stats_dest_reply`
+--
+
+CREATE TABLE IF NOT EXISTS `stats_dest_reply` (
+`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `from_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `to_date` timestamp NOT NULL DEFAULT '1971-01-01 00:00:01',
+  `prefix` varchar(50) NOT NULL,
+  `method` varchar(50) NOT NULL DEFAULT '',
+  `reply_reason` varchar(100) NOT NULL DEFAULT '',
+  `country` varchar(255) NOT NULL DEFAULT 'UN',
+  `lat` float NOT NULL DEFAULT '0',
+  `lon` float NOT NULL DEFAULT '0',
+  `total` int(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`,`from_date`),
+  UNIQUE KEY `datemethod` (`from_date`,`to_date`, `country`, `prefix`,`method`),
+  KEY `from_date` (`from_date`),
+  KEY `to_date` (`to_date`),
+  KEY `prefix` (`prefix`),
+  KEY `method` (`method`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8
+/*!50100 PARTITION BY RANGE ( UNIX_TIMESTAMP(`from_date`))
+(PARTITION pmax VALUES LESS THAN MAXVALUE ENGINE = InnoDB) */ ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `stats_method`
 --
 
 CREATE TABLE IF NOT EXISTS `stats_method` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `from_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `to_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `to_date` timestamp NOT NULL DEFAULT '1971-01-01 00:00:01',
   `method` varchar(50) NOT NULL DEFAULT '',
   `auth` tinyint(1) NOT NULL DEFAULT '0',
   `cseq` varchar(100) NOT NULL DEFAULT '',
@@ -224,7 +273,7 @@ CREATE TABLE IF NOT EXISTS `stats_method_mem` (
 CREATE TABLE IF NOT EXISTS `stats_useragent` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `from_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `to_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `to_date` timestamp NOT NULL DEFAULT '1971-01-01 00:00:01',
   `useragent` varchar(100) NOT NULL DEFAULT '',
   `method` varchar(50) NOT NULL DEFAULT '',
   `total` int(10) NOT NULL DEFAULT '0',
@@ -258,15 +307,17 @@ CREATE TABLE IF NOT EXISTS `stats_useragent_mem` (
 
 CREATE TABLE IF NOT EXISTS `stats_generic` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `from_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `to_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `from_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `to_date` timestamp NOT NULL DEFAULT '1971-01-01 00:00:01',
   `type` varchar(50) NOT NULL DEFAULT '',
+  `tag` varchar(50) NOT NULL DEFAULT '',
   `total` int(20) NOT NULL,
   PRIMARY KEY (`id`,`from_date`),
-  UNIQUE KEY `datemethod` (`from_date`,`to_date`,`type`),
+  UNIQUE KEY `datemethod` (`from_date`,`to_date`,`type`,`tag`),
   KEY `from_date` (`from_date`),
   KEY `to_date` (`to_date`),
-  KEY `method` (`type`)
+  KEY `method` (`type`,`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8
 /*!50100 PARTITION BY RANGE ( UNIX_TIMESTAMP(`from_date`))
 (PARTITION pmax VALUES LESS THAN MAXVALUE ENGINE = InnoDB) */;
+

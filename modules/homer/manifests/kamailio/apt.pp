@@ -28,7 +28,7 @@ class homer::kamailio::apt(
     }
 
     apt::source { "kamailio_${::lsbdistcodename}":
-        location          => 'http://deb.kamailio.org/kamailio43',
+        location          => 'http://deb.kamailio.org/kamailio44',
         release           => $::lsbdistcodename,
         repos             => 'main',
         key               => {

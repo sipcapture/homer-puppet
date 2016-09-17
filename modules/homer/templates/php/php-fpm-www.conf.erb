@@ -1,6 +1,9 @@
 [www]
 listen = <%= @phpfpm_socket %>
 listen.allowed_clients = 127.0.0.1
+listen.owner = <%= @web_user %>
+listen.group = <%= @web_user %>
+listen.mode = 0660
 user = <%= @web_user %>
 group = <%= @web_user %>
 pm = dynamic
