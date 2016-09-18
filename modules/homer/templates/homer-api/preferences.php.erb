@@ -1,7 +1,7 @@
 <?php
 
 define('CONFIG_VERSION', "2.0.1"); /* Please ALWAYS include CONFIGVERSION */
-define('WEBHOMER_VERSION', "5.0.1"); /* WEBHOMER VERSION */
+define('WEBHOMER_VERSION', "5.1.3"); /* WEBHOMER VERSION */
 define('HOMER_TIMEZONE', "Europe/Amsterdam"); /* Set a global application default timezone */
 
 /* CFLOW Options */
@@ -16,11 +16,11 @@ define('FORMAT_DATE_RESULT', "H:i:s"); /* Controls the Date/Time output in searc
 
 /* BLEG DETECTION */
 define('BLEGDETECT', 1); /* always detect BLEG leg in CFLOW/PCAP*/
-define('BLEGCID', "xcid"); /* options: x-cid, b2b */
+define('BLEGCID', "b2b"); /* options: x-cid, b2b */
 define('BLEGTAIL', "_b2b-1"); /* session-ID correlation suffix, required for b2b mode */
 
-/* Database: mysql */
-define('DATABASE_DRIVER',"mysql");
+/* Database: mysql. Moved to configuration.php */
+if(!defined('DATABASE_DRIVER')) define('DATABASE_DRIVER',"mysql");
 
 /* AUTH: CLASS NAME. i.e. Internal  */
 define('AUTHENTICATION',"Internal");
@@ -49,6 +49,8 @@ define('SEARCHLOG', 0);
 define('DEFAULTDBNODE',1);
   
 define('SESSION_NAME',"HOMERSESSID"); /* session ID name. */
+/* session timer */
+define('SESSION_TIME', 3600);
 
 /* SQL SCHEMA VERSION */
 define('SQL_SCHEMA_VERSION', 5); /* SQL SCHEMA VERSION. Default 5 */
@@ -57,20 +59,20 @@ define('SQL_SCHEMA_VERSION', 5); /* SQL SCHEMA VERSION. Default 5 */
 define('DATABASE_CONNECTOR', "PDOConnector");
 
 /* fields */
-define('FIELDS_CAPTURE', "id, date, (micro_ts DIV 1000) as milli_ts, micro_ts,method,reply_reason,ruri,ruri_user,ruri_domain,from_user,from_domain,from_tag,
+define('FIELDS_CAPTURE', "id, date, floor(micro_ts /1000) as milli_ts, micro_ts,method,reply_reason,ruri,ruri_user,ruri_domain,from_user,from_domain,from_tag,
 to_user,to_domain,to_tag,pid_user,contact_user,auth_user,callid,callid_aleg,via_1,via_1_branch,cseq,diversion,reason,content_type,auth,
 user_agent,source_ip,source_port,destination_ip,destination_port,contact_ip,contact_port,originator_ip,originator_port,correlation_id,proto,family,rtp_stat,type,node");
 
 /* can be file or db */
 define('PROFILE_STORE','db');
-define('PROFILE_PARAM', '/var/www/sipcapture/htdocs/store/profile');
+define('PROFILE_PARAM', ROOT.'/store/profile');
 
 /* can be file or db */
 define('DASHBOARD_STORE','db');
-define('DASHBOARD_PARAM', '/var/www/sipcapture/htdocs/store/dashboard');
+define('DASHBOARD_PARAM', ROOT.'/store/dashboard');
 
-/* PUBLIC HOST FOR SHARE */
-define('PUBLIC_SHARE_HOST',"http://127.0.0.1:8090/share/");
+/* PUBLIC HOST FOR SHARE - LEAVE EMPTY IF SAME AS HOMER UI */
+define('PUBLIC_SHARE_HOST',"");
 
 /* LDAP SETTINGS */
 
@@ -81,7 +83,56 @@ define('LDAP_BASEDN',"dc=example,dc=com");
 define('LDAP_REALM',"My Realm");
 define('LDAP_USERNAME_ATTRIBUTE_OPEN',"uid=");
 define('LDAP_USERNAME_ATTRIBUTE_CLOSE',"");
-define('LDAP_USERLEVEL',3); 
+define('LDAP_USERLEVEL',3);
+define('LDAP_UID',"uidnumber");
+define('LDAP_USERNAME',"uid");
+define('LDAP_GID',"gidnumber");
+define('LDAP_FIRSTNAME',"givenname");
+define('LDAP_LASTNAME',"sn");
+define('LDAP_EMAIL',"mail");
+define('LDAP_GROUPDN',true)
+define('LDAP_GROUP_USER','uid')
+define('LDAP_GROUP_ARRAY',false)
+define('LDAP_GROUP_ATTRIBUTE','memberUid')
 */
+
+/* external pcap storage. I.e can be cloudshark, dropbox or google drive */
+define('CLOUD_STORAGE', 0);
+define('CLOUD_STORAGE_API', "");
+define('CLOUD_STORAGE_URI', "https://www.cloudshark.org");
+
+
+define('REMOTE_LOG', 0);
+define('REMOTE_LOG_INDEX', "homer");
+define('REMOTE_LOG_URL', "http://10.0.0.1:9200");
+define('REMOTE_LOG_DOC_TYPE', "sipcapture");
+define('REMOTE_LOG_USERNAME', "root");
+define('REMOTE_LOG_PASSWORD', "root"); 
+
+/*********[EXTERNAL AUTH ]********/
+define('EXTERNAL_AUTH_URI', "http://10.0.0.1/api/request");
+define('EXTERNAL_AUTH_METHOD', "GET");
+define('EXTERNAL_AUTH_PARAM', "param=[KEY]");
+define('EXTERNAL_AUTH_USERNAME', "test");
+define('EXTERNAL_AUTH_PASSWORD', "test");
+define('EXTERNAL_AUTH_REQUEST_TYPE', "cookie");
+define('EXTERNAL_AUTH_REQUEST_KEY', "extenalid");
+define('EXTERNAL_AUTH_POSITIVE_REPLY', "200");
+define('EXTERNAL_AUTH_REPLY_USER_INFO', "json");
+
+/*** ARCHIVE DB ***/
+define('ARCHIVE_DATABASE', "archive_homer_data");
+
+/* number normalization */
+define('NORMALIZE_NUMBER', 0);
+define('MY_COUNTRY_CODE', '49');
+
+/*syslog*/
+define('SYSLOG_ENABLE', 0);
+define('SYSLOG_LEVEL', 'ERROR');
+
+define('API_AUTH_KEY', 0);
+define('API_AUTH_KEY_TYPE', "json");
+define('API_AUTH_KEY_NAME', "authkey");
 
 ?>

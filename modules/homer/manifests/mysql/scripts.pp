@@ -70,15 +70,15 @@ class homer::mysql::scripts(
     }
 
     # These files are taken from homer-api/scripts
-    # From $GIT/homer-api/scripts/homer_mysql_new_table.pl
-    file { "${base_dir}/homer_mysql_new_table.pl":
+    # From $GIT/homer-api/scripts/rotation.ini
+    file { "${base_dir}/rotation.ini":
         ensure  => file,
-        content => template('homer/mysql/homer_mysql_new_table.pl.erb'),
+        content => template('homer/mysql/rotation.ini.erb'),
     } ->
-    # From $GIT/homer-api/scripts/homer_mysql_partrotate_unixtimestamp.pl
-    file { "${base_dir}/homer_mysql_partrotate_unixtimestamp.pl":
+    # From $GIT/homer-api/scripts/homer_mysql_rotate.pl
+    file { "${base_dir}/homer_mysql_rotate.pl":
         ensure  => file,
-        content => template('homer/mysql/homer_mysql_partrotate_unixtimestamp.pl.erb'),
+        content => file('homer/mysql/homer_mysql_rotate.pl'),
     } ->
 #N.B. please run rotate.sh manual before send traffic to homer.
 # The script will create capture tables also for current day.
