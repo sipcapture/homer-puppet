@@ -27,6 +27,14 @@ class homer::kamailio(
     $mysql_user,
     $mysql_password,
 ) {
+    group { 'kamailio':
+        ensure => present,
+    } ->
+    user { 'kamailio':
+        name => 'kamailio',
+        gid  => 'kamailio',
+    }
+
     $manage_systemd = false
 
     case $::lsbdistcodename {
@@ -72,26 +80,22 @@ class homer::kamailio(
         owner   => 'kamailio',
         group   => 'kamailio',
         content => file('homer/kamailio/kamailio.cfg'),
-        notify  => Service['kamailio'],
     } ->
     file { "${kamailio_etc_dir}/kamailio-local.cfg":
         ensure  => present,
         owner   => 'kamailio',
         group   => 'kamailio',
         content => template('homer/kamailio/kamailio-local.cfg.erb'),
-        notify  => Service['kamailio'],
     } ->
     file { "${kamailio_etc_dir}/kamctlrc":
         ensure  => present,
         owner   => 'kamailio',
         group   => 'kamailio',
         content => file('homer/kamailio/kamctlrc'),
-        notify  => Service['kamailio'],
     } ->
     file { '/etc/default/kamailio':
         ensure  => present,
         content => file('homer/kamailio/default'),
-        notify  => Service['kamailio'],
     }
 
     if ($manage_systemd) {
@@ -119,10 +123,10 @@ class homer::kamailio(
             path        => '/bin',
             refreshonly => true,
         }
-    }
 
-    service { 'kamailio':
-        ensure => running,
-        enable => true,
+        service { 'kamailio':
+            ensure => running,
+            enable => true,
+        }
     }
 }
