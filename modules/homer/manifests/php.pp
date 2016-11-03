@@ -26,10 +26,6 @@ class homer::php(
 ) {
 
     if ($::lsbdistcodename == 'xenial') {
-        $phpfpm_socket    = '/var/run/php/php7.0-fpm.sock'
-        $php_session_path = '/var/lib/php/session'
-        $phpfpm_slowlog   = '/var/log/php/7.0/fpm/www-slow.log'
-        $phpfpm_errlog    = '/var/log/php/7.0/fpm/www-error.log'
 
         package { [
             'php-common',
@@ -66,8 +62,6 @@ class homer::php(
         }
     }
     else {
-        $phpfpm_slowlog   = '/var/log/php5-fpm/www-slow.log'
-        $phpfpm_errlog    = '/var/log/php5-fpm/www-error.log'
 
         package { [
             'php5-common',
