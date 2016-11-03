@@ -32,27 +32,38 @@ class homer::kamailio(
     case $::lsbdistcodename {
         'trusty': {
             include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
          }
         'precise': {
             include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
          }
         'jessie': {
             include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
          }
         'wheezy': {
             include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
          }
         'squeeze': {
             include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
          }
+        'xenial': {
+            $manage_kamailio_package = false
+        }
     }
 
-    package { ['kamailio',
+    if ($manage_kamailio_package) {
+        package { ['kamailio',
                'kamailio-geoip-modules',
                'kamailio-utils-modules',
                'kamailio-mysql-modules']:
-        ensure => present,
-    } ->
+            ensure => present,
+        }
+    }
+
     file { $kamailio_etc_dir:
         ensure => directory,
     } ->
