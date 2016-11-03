@@ -27,18 +27,24 @@ class homer::kamailio(
     $mysql_user,
     $mysql_password,
 ) {
+    $manage_systemd = false
 
-    # TODO: refine this conditional
-    case $::operatingsystem {
-        'Ubuntu': {
+    case $::lsbdistcodename {
+        'trusty': {
             include 'homer::kamailio::apt'
-            $manage_systemd = false
          }
-        'Debian': {
+        'precise': {
             include 'homer::kamailio::apt'
-            $manage_systemd = false
          }
-        default : { $manage_systemd = true }
+        'jessie': {
+            include 'homer::kamailio::apt'
+         }
+        'wheezy': {
+            include 'homer::kamailio::apt'
+         }
+        'squeeze': {
+            include 'homer::kamailio::apt'
+         }
     }
 
     package { ['kamailio',
