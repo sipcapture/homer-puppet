@@ -69,6 +69,13 @@ class homer::mysql::scripts(
         refreshonly => true,
     }
 
+    package { [
+        'perl',
+        'libdbi-perl',
+        'libclass-dbi-mysql-perl'
+        ]:
+        ensure => present,
+    } ->
     # These files are taken from homer-api/scripts
     # From $GIT/homer-api/scripts/rotation.ini
     file { "${base_dir}/rotation.ini":
