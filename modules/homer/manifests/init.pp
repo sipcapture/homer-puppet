@@ -125,7 +125,7 @@ class homer(
 ) inherits homer::params {
     validate_bool($manage_mysql)
 
-    if $ui_admin_password == undef {
+    if ($manage_mysql and ($ui_admin_password == undef)) {
         fail('You must define ui_admin_password')
     }
 
@@ -145,17 +145,17 @@ class homer(
         class { 'homer::mysql':
             mysql_root_password => $mysql_root_password,
             stage               => 'preconditions',
+        } ->
+        class { 'homer::mysql::scripts':
+            base_dir            => $base_dir,
+            mysql_host          => $mysql_host,
+            mysql_user          => $mysql_user,
+            mysql_password      => $mysql_password,
+            mysql_root_password => $mysql_root_password,
+            ui_admin_password   => $ui_admin_password,
         }
     }
 
-    class { 'homer::mysql::scripts':
-        base_dir            => $base_dir,
-        mysql_host          => $mysql_host,
-        mysql_user          => $mysql_user,
-        mysql_password      => $mysql_password,
-        mysql_root_password => $mysql_root_password,
-        ui_admin_password   => $ui_admin_password,
-    } ->
     class { 'homer::web':
         base_dir       => $base_dir,
         mysql_user     => $mysql_user,
