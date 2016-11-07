@@ -59,6 +59,70 @@ sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --sh
 sudo puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff
 ```
 
+Summary of installation procedure
+---------------------------------
+
+```
+apt update
+apt install -y git wget
+
+# Puppet for debian jessie
+#wget https://apt.puppetlabs.com/puppetlabs-release-jessie.deb
+#dpkg -i puppetlabs-release-jessie.deb
+
+# Puppet for ubuntu xenial
+wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+dpkg -i puppetlabs-release-pc1-xenial.deb
+
+apt update
+apt install -y puppet
+
+# Required Puppet modules (mysql is optional)
+puppet module install puppetlabs/stdlib && puppet module install puppetlabs/mysql && puppet module install puppetlabs/apt
+
+# The "source dir" by default is '/root'
+# It can be changed by setting 'source_dir => DIR,' in site.pp
+# This is where the module expects the source code for homer-ui and homer-api
+cd /root
+git clone https://github.com/sipcapture/homer-ui
+git clone https://github.com/sipcapture/homer-api
+git clone https://github.com/sipcapture/homer-puppet
+cd homer-puppet
+```
+
+# If needed
+#git checkout gv/xenial
+
+```
+puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff
+```
+
+```
+/usr/local/sbin/kamailio -f /usr/local/etc/kamailio/kamailio.cfg -E -e
+```
+
+
+Installing Kamailio from source
+-------------------------------
+
+```
+apt update
+apt install -y make gcc bison flex libmysqlclient-dev
+mkdir -p /usr/local/src/kamailio-4.4
+cd /usr/local/src/kamailio-4.4
+git clone --depth 1 --no-single-branch git://git.kamailio.org/kamailio kamailio
+cd kamailio
+git checkout -b 4.4 origin/4.4
+
+make FLAVOUR=kamailio include_modules="db_mysql" cfg && make all && make install
+```
+
+(run puppet apply)
+
+```
+/usr/local/sbin/kamailio -f /usr/local/etc/kamailio/kamailio.cfg -E -e
+```
+
 Dependencies
 ------------
 
@@ -71,8 +135,8 @@ Dependencies
 Tested on
 ---------
 
+Ubuntu 16.04
 Ubuntu 14.04
-
 Debian 8.3
 
 License
