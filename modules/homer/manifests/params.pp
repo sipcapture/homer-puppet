@@ -35,6 +35,9 @@ class homer::params {
     $ui_admin_password   = undef
 
     if ($::lsbdistcodename == 'xenial') {
+        $db_configuration = 'homer_prod'
+        $db_data          = 'homer_prod'
+        $db_statistic     = 'homer_prod'
         $kamailio_mpath   = '/usr/local/lib64/kamailio/modules'
         $kamailio_etc_dir = '/usr/local/etc/kamailio'
         $phpfpm_socket    = '/var/run/php/php7.0-fpm.sock'
@@ -43,7 +46,10 @@ class homer::params {
         $phpfpm_errlog    = '/var/log/php/7.0/fpm/www-error.log'
     }
     else {
-        $kamailio_mpath      = '/usr/lib/x86_64-linux-gnu/kamailio/modules'
+        $db_configuration = 'homer_configuration'
+        $db_data          = 'homer_data'
+        $db_statistic     = 'homer_statistic'
+        $kamailio_mpath   = '/usr/lib/x86_64-linux-gnu/kamailio/modules'
         $kamailio_etc_dir = '/etc/kamailio'
         $phpfpm_socker    = '/var/run/php5-fpm.sock'
         $php_session_path = '/var/lib/php5/session'

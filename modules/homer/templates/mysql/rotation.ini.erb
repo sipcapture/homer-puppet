@@ -3,10 +3,10 @@
 [MYSQL]
     user=<%= @mysql_user %>
     password=<%= @mysql_password %>
-    host=localhost
+    host=<%= @mysql_host %>
     port=3306
-    db_data = homer_data
-    db_stats = homer_statistic
+    db_data = <%= @db_data %>
+    db_stats = <%= @db_statistic %>
     # Extra param
     newtables = 2 # Create new tables or partitions for next 2 days
     engine = InnoDB #MyISAM or InnoDB

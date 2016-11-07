@@ -9,9 +9,9 @@ define('DB_HOSTNAME', "<%= @mysql_host %>");
 define('DB_PORT', 3306);
 define('DB_USERNAME', "<%= @mysql_user %>");
 define('DB_PASSWORD', "<%= @mysql_password %>");
-define('DB_CONFIGURATION', "homer_configuration");
-define('DB_STATISTIC', "homer_statistic");
-define('DB_HOMER', "homer_data");
+define('DB_CONFIGURATION', "<%= @db_configuration %>");
+define('DB_STATISTIC', "<%= @db_statistic %>");
+define('DB_HOMER', "<%= @db_data %>");
 define('SINGLE_NODE', 1);
 define('DATABASE_DRIVER',"mysql");
 

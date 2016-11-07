@@ -19,6 +19,8 @@
 #
 ## homer::kamailio
 class homer::kamailio(
+    $db_data,
+    $db_statistic,
     $listen_proto,
     $listen_if,
     $listen_port,

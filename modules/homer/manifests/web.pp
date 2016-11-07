@@ -20,6 +20,7 @@
 #
 # homer::web
 class homer::web(
+    $db_configuration,
     $base_dir,
     $mysql_user,
     $mysql_password,

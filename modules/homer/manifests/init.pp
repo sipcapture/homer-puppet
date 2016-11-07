@@ -106,6 +106,9 @@
 #
 class homer(
     $base_dir            = $homer::params::base_dir,
+    $db_configuration    = $homer::params::db_configuration,
+    $db_data             = $homer::params::db_data,
+    $db_statistic        = $homer::params::db_statistic,
     $listen_if           = $homer::params::listen_if,
     $listen_port         = $homer::params::listen_port,
     $listen_proto        = $homer::params::listen_proto,
@@ -156,7 +159,15 @@ class homer(
         }
     }
 
+    class { 'homer::mysql::rotation':
+        base_dir       => $base_dir,
+        mysql_host     => $mysql_host,
+        mysql_user     => $mysql_user,
+        mysql_password => $mysql_password,
+    }
+
     class { 'homer::web':
+        db_configuration => $db_configuration,
         base_dir       => $base_dir,
         mysql_user     => $mysql_user,
         mysql_password => $mysql_password,
@@ -171,6 +182,8 @@ class homer(
         web_user         => $web_user,
     } ->
     class { 'homer::kamailio':
+        db_data          => $db_data,
+        db_statistic     => $db_statistic,
         listen_proto     => $listen_proto,
         listen_if        => $listen_if,
         listen_port      => $listen_port,
