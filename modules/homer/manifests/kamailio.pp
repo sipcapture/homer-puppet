@@ -61,7 +61,8 @@ class homer::kamailio(
             $manage_kamailio_package = true
          }
         'xenial': {
-            $manage_kamailio_package = false
+            include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
         }
     }
 

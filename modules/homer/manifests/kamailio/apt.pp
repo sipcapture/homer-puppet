@@ -33,7 +33,7 @@ class homer::kamailio::apt(
         repos             => 'main',
         key               => {
             id     => 'E79ACECB87D8DCD23A20AD2FFB40D3E6508EA4C8',
-            source => 'http://deb.kamailio.org/kamailiodebkey.gpg',
+            server => 'deb.kamailio.org',
         },
         include           => {
             src => true,
