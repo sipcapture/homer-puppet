@@ -33,9 +33,6 @@ class homer::mysql::scripts(
         mode  => '0700',
     }
 
-    file { $base_dir:
-        ensure => directory,
-    } ->
     file { "${base_dir}/sql":
         ensure  => directory,
         require => File[$base_dir],
