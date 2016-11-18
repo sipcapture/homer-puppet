@@ -39,6 +39,8 @@ class homer::kamailio(
 
     $manage_systemd = false
 
+    include 'homer::kamailio::monit'
+
     case $::lsbdistcodename {
         'trusty': {
             include 'homer::kamailio::apt'
