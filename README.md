@@ -3,7 +3,7 @@
 # homer-puppet
 #### HOMER Puppet Modules
 
-This is a Puppet module to install and configure [Homer](https://github.com/sipcapture/homer)
+This is a Puppet module to install and configure [Homer](https://github.com/sipcapture/homer).
 
 Define a structure like this:
 
@@ -90,7 +90,7 @@ git clone https://github.com/sipcapture/homer-puppet
 cd homer-puppet
 ```
 
-# If needed, use the appropriate branch, e.g.:
+If needed, use the appropriate branch, e.g.:
 #git checkout gv/xenial
 
 ```
@@ -116,9 +116,9 @@ Dependencies
 Tested on
 ---------
 
-Ubuntu 16.04
-Ubuntu 14.04
-Debian 8.3
+- Ubuntu 16.04
+- Ubuntu 14.04
+- Debian 8.3
 
 License
 -------
