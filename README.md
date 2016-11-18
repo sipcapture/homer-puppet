@@ -90,38 +90,19 @@ git clone https://github.com/sipcapture/homer-puppet
 cd homer-puppet
 ```
 
-# If needed
+# If needed, use the appropriate branch, e.g.:
 #git checkout gv/xenial
 
 ```
 puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff
 ```
 
-```
-/usr/local/sbin/kamailio -f /usr/local/etc/kamailio/kamailio.cfg -E -e
-```
-
-
-Installing Kamailio from source
--------------------------------
+Ensure kamailio is running and watched by monit:
 
 ```
-apt update
-apt install -y make gcc bison flex libmysqlclient-dev
-mkdir -p /usr/local/src/kamailio-4.4
-cd /usr/local/src/kamailio-4.4
-git clone --depth 1 --no-single-branch git://git.kamailio.org/kamailio kamailio
-cd kamailio
-git checkout -b 4.4 origin/4.4
-
-make FLAVOUR=kamailio include_modules="db_mysql" cfg && make all && make install
+monit start kamailio
 ```
 
-(run puppet apply)
-
-```
-/usr/local/sbin/kamailio -f /usr/local/etc/kamailio/kamailio.cfg -E -e
-```
 
 Dependencies
 ------------
