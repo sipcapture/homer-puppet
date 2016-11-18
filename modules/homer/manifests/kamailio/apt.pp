@@ -27,14 +27,13 @@ class homer::kamailio::apt(
         ensure => present,
     }
 
+    exec { 'install_apt_key':
+        command => '/usr/bin/apt-key adv --keyserver http://deb.kamailio.org/kamailiodebkey.gpg --recv-keys E79ACECB87D8DCD23A20AD2FFB40D3E6508EA4C8',
+    } ->
     apt::source { "kamailio_${::lsbdistcodename}":
         location          => 'http://deb.kamailio.org/kamailio44',
         release           => $::lsbdistcodename,
         repos             => 'main',
-        key               => {
-            id     => 'E79ACECB87D8DCD23A20AD2FFB40D3E6508EA4C8',
-            server => 'deb.kamailio.org',
-        },
         include           => {
             src => true,
         },
