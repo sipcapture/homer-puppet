@@ -90,8 +90,9 @@ git clone https://github.com/sipcapture/homer-puppet
 cd homer-puppet
 ```
 
-If needed, use the appropriate branch, e.g.:
-#git checkout gv/xenial
+If needed, use the appropriate branch, e.g. `git checkout gv/xenial`.
+
+Run the Puppet deployment:
 
 ```
 puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff
