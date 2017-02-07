@@ -19,6 +19,8 @@
 #
 ## homer::kamailio
 class homer::kamailio(
+    $db_data,
+    $db_statistic,
     $listen_proto,
     $listen_if,
     $listen_port,
@@ -27,26 +29,54 @@ class homer::kamailio(
     $mysql_user,
     $mysql_password,
 ) {
-
-    # TODO: refine this conditional
-    case $::operatingsystem {
-        'Ubuntu': {
-            include 'homer::kamailio::apt'
-            $manage_systemd = false
-         }
-        'Debian': {
-            include 'homer::kamailio::apt'
-            $manage_systemd = false
-         }
-        default : { $manage_systemd = true }
+    group { 'kamailio':
+        ensure => present,
+    } ->
+    user { 'kamailio':
+        name => 'kamailio',
+        gid  => 'kamailio',
     }
 
-    package { ['kamailio',
+    $manage_systemd = false
+
+    include 'homer::kamailio::monit'
+
+    case $::lsbdistcodename {
+        'trusty': {
+            include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
+         }
+        'precise': {
+            include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
+         }
+        'jessie': {
+            include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
+         }
+        'wheezy': {
+            include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
+         }
+        'squeeze': {
+            include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
+         }
+        'xenial': {
+            include 'homer::kamailio::apt'
+            $manage_kamailio_package = true
+        }
+    }
+
+    if ($manage_kamailio_package) {
+        package { ['kamailio',
                'kamailio-geoip-modules',
                'kamailio-utils-modules',
                'kamailio-mysql-modules']:
-        ensure => present,
-    } ->
+            ensure => present,
+        }
+    }
+
     file { $kamailio_etc_dir:
         ensure => directory,
     } ->
@@ -55,26 +85,22 @@ class homer::kamailio(
         owner   => 'kamailio',
         group   => 'kamailio',
         content => file('homer/kamailio/kamailio.cfg'),
-        notify  => Service['kamailio'],
     } ->
     file { "${kamailio_etc_dir}/kamailio-local.cfg":
         ensure  => present,
         owner   => 'kamailio',
         group   => 'kamailio',
         content => template('homer/kamailio/kamailio-local.cfg.erb'),
-        notify  => Service['kamailio'],
     } ->
     file { "${kamailio_etc_dir}/kamctlrc":
         ensure  => present,
         owner   => 'kamailio',
         group   => 'kamailio',
         content => file('homer/kamailio/kamctlrc'),
-        notify  => Service['kamailio'],
     } ->
     file { '/etc/default/kamailio':
         ensure  => present,
         content => file('homer/kamailio/default'),
-        notify  => Service['kamailio'],
     }
 
     if ($manage_systemd) {
@@ -102,10 +128,10 @@ class homer::kamailio(
             path        => '/bin',
             refreshonly => true,
         }
-    }
 
-    service { 'kamailio':
-        ensure => running,
-        enable => true,
+        service { 'kamailio':
+            ensure => running,
+            enable => true,
+        }
     }
 }

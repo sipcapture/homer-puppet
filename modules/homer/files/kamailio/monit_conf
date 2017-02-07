@@ -1,0 +1,4 @@
+check process kamailio with pidfile /var/run/kamailio/kamailio.pid
+    start program = "/etc/init.d/kamailio start"
+    stop  program = "/etc/init.d/kamailio stop"
+    if 5 restarts within 5 cycles then timeout

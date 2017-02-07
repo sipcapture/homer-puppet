@@ -18,26 +18,15 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 #
-# homer::kamailio::apt
-class homer::kamailio::apt(
-) {
-    include '::apt'
-
-    package { ['debian-keyring', 'debian-archive-keyring']:
+# homer::kamailio::monit
+class homer::kamailio::monit() {
+    package { 'monit':
         ensure => present,
-    }
-
-    exec { 'install_apt_key':
-        command => '/usr/bin/apt-key adv --keyserver http://deb.kamailio.org/kamailiodebkey.gpg --recv-keys E79ACECB87D8DCD23A20AD2FFB40D3E6508EA4C8',
     } ->
-    apt::source { "kamailio_${::lsbdistcodename}":
-        location          => 'http://deb.kamailio.org/kamailio44',
-        release           => $::lsbdistcodename,
-        repos             => 'main',
-        include           => {
-            src => true,
-        },
+    file { '/etc/monit/conf-enabled/kamailio':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => file('homer/kamailio/monit_conf'),
     }
-
-    Apt::Source["kamailio_${::lsbdistcodename}"] -> Package<|tag == 'kamailio'|>
 }
