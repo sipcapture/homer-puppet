@@ -46,7 +46,7 @@ class homer::params {
         $phpfpm_errlog    = '/var/log/php/7.0/fpm/www-error.log'
     }
     else {
-        $phpfpm_socker    = '/var/run/php5-fpm.sock'
+        $phpfpm_socket    = '/var/run/php5-fpm.sock'
         $php_session_path = '/var/lib/php5/session'
         $phpfpm_slowlog   = '/var/log/php5-fpm/www-slow.log'
         $phpfpm_errlog    = '/var/log/php5-fpm/www-error.log'
