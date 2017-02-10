@@ -22,7 +22,16 @@
 class homer::mysql(
     $mysql_root_password
 ) {
+    if ($::lsbdistcodename == 'jessie') {
+        mysql_version = '5.7.17-1debian8'
+    }
+    else {
+        mysql_version = 'present'
+    }
+
     class { '::mysql::server':
+        manage_config_file      => false,
+        package_ensure          => $mysql_version,
         root_password           => $mysql_root_password,
         remove_default_accounts => true,
         override_options        => {
