@@ -31,5 +31,12 @@ class homer::mysql(
             }
         },
         restart                 => true,
+    } ->
+    file { '/etc/mysql/my.cnf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('homer/mysql/my.cnf.erb'),
     }
 }
