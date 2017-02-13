@@ -20,6 +20,11 @@
 #
 # homer::mysql
 class homer::mysql(
+    $innodb_buffer_pool_size,
+    $innodb_log_file_size,
+    $innodb_read_io_threads,
+    $innodb_write_io_threads,
+    $max_heap_table_size,
     $mysql_root_password
 ) {
     if ($::lsbdistcodename == 'jessie') {
@@ -41,7 +46,7 @@ class homer::mysql(
         },
         restart                 => true,
     } ->
-    file { '/etc/mysql/my.cnf':
+    file { '/etc/mysql/mysql.cnf':
         ensure  => present,
         owner   => 'root',
         group   => 'root',

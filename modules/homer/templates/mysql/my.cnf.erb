@@ -5,7 +5,7 @@ socket=/var/run/mysqld/mysqld.sock
 
 #Caches
 tmp_table_size                 = 32M
-max_heap_table_size            = 3G #10 % of system memory
+max_heap_table_size            = <%= @max_heap_table_size %> #10 % of system memory
 query_cache_type               = 0  
 query_cache_size               = 0  
 max_connections                = 500
@@ -18,15 +18,15 @@ explicit_defaults_for_timestamp = 1
 #INNODB
 innodb_flush_method            = O_DIRECT
 innodb_log_files_in_group      = 2   
-innodb_log_file_size           = 4G  #  # 12 % of system memory
+innodb_log_file_size           = <%= @innodb_log_file_size %>  #  # 12 % of system memory
 innodb_flush_log_at_trx_commit = 0   
 innodb_file_per_table          = 1   
-innodb_buffer_pool_size        = 12G  #40% of System memory
+innodb_buffer_pool_size        = <%= @innodb_buffer_pool_size %>  #40% of System memory
 innodb_stats_on_metadata       = 0   
 innodb_file_format             = barracuda
 #innodb_force_recovery         =  1
-innodb_read_io_threads = 4  #  40 % of CPUs
-innodb_write_io_threads = 8 # 60-80% of CPUs
+innodb_read_io_threads = <%= @innodb_read_io_threads %>  #  40 % of CPUs
+innodb_write_io_threads = <%= @innodb_write_io_threads %> # 60-80% of CPUs
 innodb_thread_concurrency=40 # 
 #skip-innodb_doublewrite
 
