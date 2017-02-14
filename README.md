@@ -90,7 +90,7 @@ git clone https://github.com/sipcapture/homer-puppet
 cd homer-puppet
 ```
 
-If needed, use the appropriate branch, e.g. `git checkout gv/xenial`.
+For debian, this is already scripted in `scripts/debian_pre_install.sh`: start from there.
 
 Run the Puppet deployment:
 
@@ -98,7 +98,7 @@ Run the Puppet deployment:
 puppet apply --debug --modulepath=/etc/puppet/modules:modules/ site.pp --show_diff
 ```
 
-Ensure kamailio is running and watched by monit:
+Ensure kamailio is running and watched by monit (clean installations may need to enable HTTP access to monit: set monitrc accordingly):
 
 ```
 monit start kamailio
@@ -119,7 +119,7 @@ Tested on
 
 - Ubuntu 16.04
 - Ubuntu 14.04
-- Debian 8.3
+- Debian 8.7
 
 License
 -------
