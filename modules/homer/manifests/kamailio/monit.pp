@@ -20,10 +20,19 @@
 #
 # homer::kamailio::monit
 class homer::kamailio::monit() {
+    if ($::lsbdistcodename == 'xenial') {
+        $conf_path = '/etc/monit/conf-enabled/kamailio'
+    }
+    else {
+        $conf_path = '/etc/monit/conf.d/kamailio'
+    }
+
+    # TODO: Note that you may need to enable HTTP connections to monit
+
     package { 'monit':
         ensure => present,
     } ->
-    file { '/etc/monit/conf-enabled/kamailio':
+    file { $conf_path:
         owner   => 'root',
         group   => 'root',
         mode    => '0644',

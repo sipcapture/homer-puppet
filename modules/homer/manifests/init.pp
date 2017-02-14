@@ -109,12 +109,17 @@ class homer(
     $db_configuration    = $homer::params::db_configuration,
     $db_data             = $homer::params::db_data,
     $db_statistic        = $homer::params::db_statistic,
+    $innodb_buffer_pool_size = $homer::params::innodb_buffer_pool_size,
+    $innodb_log_file_size    = $homer::params::innodb_log_file_size,
+    $innodb_read_io_threads  = $homer::params::innodb_read_io_threads,
+    $innodb_write_io_threads = $homer::params::innodb_write_io_threads,
     $listen_if           = $homer::params::listen_if,
     $listen_port         = $homer::params::listen_port,
     $listen_proto        = $homer::params::listen_proto,
     $kamailio_etc_dir    = $homer::params::kamailio_etc_dir,
     $kamailio_mpath      = $homer::params::kamailio_mpath,
     $manage_mysql        = $homer::params::manage_mysql,
+    $max_heap_table_size = $homer::params::max_heap_table_size,
     $mysql_host          = $homer::params::mysql_host,
     $mysql_user          = $homer::params::mysql_user,
     $mysql_password      = $homer::params::mysql_password,
@@ -146,8 +151,13 @@ class homer(
         }
 
         class { 'homer::mysql':
-            mysql_root_password => $mysql_root_password,
-            stage               => 'preconditions',
+            innodb_buffer_pool_size => $innodb_buffer_pool_size,
+            innodb_log_file_size    => $innodb_log_file_size,
+            innodb_read_io_threads  => $innodb_read_io_threads,
+            innodb_write_io_threads => $innodb_write_io_threads,
+            max_heap_table_size     => $max_heap_table_size,
+            mysql_root_password     => $mysql_root_password,
+            stage                   => 'preconditions',
         } ->
         class { 'homer::mysql::scripts':
             base_dir            => $base_dir,

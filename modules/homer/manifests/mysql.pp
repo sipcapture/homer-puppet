@@ -20,9 +20,23 @@
 #
 # homer::mysql
 class homer::mysql(
+    $innodb_buffer_pool_size,
+    $innodb_log_file_size,
+    $innodb_read_io_threads,
+    $innodb_write_io_threads,
+    $max_heap_table_size,
     $mysql_root_password
 ) {
+    if ($::lsbdistcodename == 'jessie') {
+        $mysql_version = '5.7.17-1debian8'
+    }
+    else {
+        $mysql_version = 'present'
+    }
+
     class { '::mysql::server':
+        manage_config_file      => false,
+        package_ensure          => $mysql_version,
         root_password           => $mysql_root_password,
         remove_default_accounts => true,
         override_options        => {
@@ -31,5 +45,12 @@ class homer::mysql(
             }
         },
         restart                 => true,
+    } ->
+    file { '/etc/mysql/mysql.cnf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('homer/mysql/my.cnf.erb'),
     }
 }

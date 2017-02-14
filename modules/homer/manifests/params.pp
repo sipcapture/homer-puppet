@@ -21,10 +21,15 @@
 # class homer::params
 class homer::params {
     $base_dir            = '/opt/homer'
+    $innodb_buffer_pool_size = '12G'
+    $innodb_log_file_size    = '4G'
+    $innodb_read_io_threads  = '4'
+    $innodb_write_io_threads = '8'
     $listen_if           = '0.0.0.0'
     $listen_port         = '9060'
     $listen_proto        = 'udp'
     $manage_mysql        = false
+    $max_heap_table_size = '3G'
     $mysql_user          = 'sipcapture'
     $mysql_host          = '127.0.0.1'
     $mysql_password      = undef
